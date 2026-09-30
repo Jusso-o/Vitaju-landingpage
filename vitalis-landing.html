@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Vitalis — Treinos que se adaptam a você</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base-950: #0c0a17;
+    --base-900: #12101f;
+    --base-850: #16132a;
+    --base-800: #1a1730;
+    --base-700: #241f3d;
+    --base-600: #312a4d;
+    --violet-400: #a78bfa;
+    --violet-500: #8b5cf6;
+    --violet-600: #7c3aed;
+    --mint-400: #4ade80;
+    --mint-500: #22c55e;
+    --ember-400: #fb923c;
+    --ember-500: #f97316;
+    --sky-400: #38bdf8;
+    --coral-500: #ef4444;
+    --white-90: rgba(255,255,255,0.92);
+    --white-70: rgba(255,255,255,0.68);
+    --white-50: rgba(255,255,255,0.48);
+    --white-35: rgba(255,255,255,0.34);
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  }
+
+  body {
+    margin: 0;
+    background: var(--base-950);
+    color: var(--white-90);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .display { font-family: 'Sora', system-ui, sans-serif; }
+
+  img, svg { max-width: 100%; }
+
+  a { color: inherit; }
+
+  .wrap {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(12,10,23,0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--base-700);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand-mark { width: 30px; height: 30px; flex-shrink: 0; }
+  .brand-name { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+    color: var(--white-70);
+  }
+  .nav-links a { text-decoration: none; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--white-90); }
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--violet-500);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 9px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -8px rgba(139,92,246,0.55);
+    transition: background .15s ease, transform .15s ease;
+  }
+  .nav-cta:hover { background: var(--violet-600); transform: translateY(-1px); }
+  @media (max-width: 780px) { .nav-links { display: none; } }
+
+  /* ---------- Buttons ---------- */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--violet-500);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 26px;
+    border-radius: 14px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 26px -10px rgba(139,92,246,0.6);
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn-primary:hover { background: var(--violet-600); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--white-90);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 14px;
+    text-decoration: none;
+    border: 1px solid var(--base-600);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .btn-ghost:hover { border-color: var(--violet-400); background: rgba(139,92,246,0.08); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 76px 0 90px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -160px;
+    right: -120px;
+    width: 560px;
+    height: 560px;
+    background: radial-gradient(circle, rgba(139,92,246,0.28) 0%, rgba(139,92,246,0) 68%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -200px;
+    left: -160px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(34,197,94,0.14) 0%, rgba(34,197,94,0) 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 940px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 52px; }
+    .hero { padding: 52px 0 64px; text-align: center; }
+    .hero-badges { justify-content: center; }
+    .hero-cta-row { justify-content: center; }
+    .phone-stage { margin: 0 auto; }
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mint-400);
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.25);
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 4.6vw, 54px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    max-width: 620px;
+  }
+  @media (max-width: 940px) { .hero h1 { max-width: 100%; } }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--violet-400), var(--sky-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p.lead {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--white-70);
+    max-width: 480px;
+    margin: 0 0 32px;
+  }
+  @media (max-width: 940px) { .hero p.lead { max-width: 100%; margin-left: auto; margin-right: auto; } }
+  .hero-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 34px; }
+  .hero-badges { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .hero-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--white-50); }
+  .hero-badge svg { width: 16px; height: 16px; color: var(--mint-400); flex-shrink: 0; }
+
+  /* ---------- Phone mockup ---------- */
+  .phone-stage { display: flex; justify-content: center; }
+  .phone {
+    width: 300px;
+    background: var(--base-900);
+    border: 1px solid var(--base-700);
+    border-radius: 40px;
+    padding: 14px;
+    box-shadow: 0 0 0 1px rgba(139,92,246,0.15), 0 30px 70px -20px rgba(0,0,0,0.65), 0 0 60px -10px rgba(139,92,246,0.25);
+  }
+  .phone-screen {
+    background: var(--base-950);
+    border-radius: 28px;
+    padding: 18px 16px 20px;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .phone-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .phone-font-toggle { display: flex; gap: 6px; }
+  .phone-font-toggle span {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--white-50);
+    background: var(--base-800); border-radius: 8px; height: 22px; width: 22px;
+  }
+  .phone-font-toggle span.on { background: var(--violet-500); color: white; }
+  .phone-voice {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700; color: var(--mint-400);
+    background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 999px; padding: 3px 8px;
+  }
+  .phone-voice svg { width: 10px; height: 10px; }
+  .phone-greet { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .phone-avatar {
+    width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--violet-400), var(--violet-600));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora'; font-weight: 700; font-size: 15px; color: white;
+  }
+  .phone-greet .g1 { font-size: 12px; color: var(--white-50); margin: 0; }
+  .phone-greet .g2 { font-family: 'Sora'; font-weight: 600; font-size: 15px; margin: 1px 0 0; }
+  .phone-card {
+    background: var(--base-800); border: 1px solid var(--base-700);
+    border-radius: 16px; padding: 13px; margin-bottom: 12px;
+  }
+  .phone-card-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+  .phone-card-row .lvl { font-family: 'Sora'; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+  .phone-card-row .lvl svg { width: 13px; height: 13px; color: var(--ember-400); }
+  .phone-card-row .xp {
+    font-size: 10px; font-weight: 700; color: var(--mint-400);
+    background: rgba(34,197,94,0.1); padding: 3px 9px; border-radius: 999px;
+  }
+  .bar { height: 7px; border-radius: 999px; background: var(--base-700); overflow: hidden; }
+  .bar > div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint-500), var(--mint-400)); }
+  .phone-card .sub { font-size: 10px; color: var(--white-35); margin: 7px 0 0; }
+  .phone-stats { display: flex; gap: 8px; margin-bottom: 12px; }
+  .phone-stat {
+    flex: 1; background: var(--base-800); border: 1px solid var(--base-700);
+    border-radius: 14px; padding: 10px 6px; text-align: center;
+  }
+  .phone-stat svg { width: 15px; height: 15px; margin-bottom: 5px; }
+  .phone-stat .v { font-family: 'Sora'; font-weight: 700; font-size: 14px; display: block; }
+  .phone-stat .l { font-size: 9px; color: var(--white-35); }
+  .phone-section-title { font-family: 'Sora'; font-weight: 600; font-size: 12px; margin: 0 0 8px; color: var(--white-90); }
+  .phone-challenge { display: flex; align-items: center; gap: 10px; }
+  .phone-play {
+    width: 34px; height: 34px; border-radius: 12px; background: var(--mint-500);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .phone-play svg { width: 13px; height: 13px; color: var(--base-950); }
+  .phone-nav {
+    display: flex; justify-content: space-around; margin-top: 4px;
+    border-top: 1px solid var(--base-700); padding-top: 10px;
+  }
+  .phone-nav div { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .phone-nav svg { width: 16px; height: 16px; color: var(--white-35); }
+  .phone-nav div.active svg { color: var(--mint-400); }
+  .phone-nav span { font-size: 8px; color: var(--white-35); }
+  .phone-nav div.active span { color: var(--mint-400); }
+
+  /* ---------- Sections ---------- */
+  section { padding: 88px 0; }
+  @media (max-width: 780px) { section { padding: 64px 0; } }
+  .section-head { max-width: 560px; margin: 0 0 48px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .section-head h2 {
+    font-size: clamp(26px, 3.2vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.16;
+    margin: 0 0 14px;
+  }
+  .section-head p {
+    font-size: 16px; line-height: 1.65; color: var(--white-70); margin: 0;
+  }
+  .divider { border: none; border-top: 1px solid var(--base-700); margin: 0; }
+
+  /* Intensity sequence */
+  .levels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    position: relative;
+  }
+  @media (max-width: 780px) { .levels { grid-template-columns: 1fr; } }
+  .level-card {
+    background: var(--base-900);
+    border: 1px solid var(--base-700);
+    border-radius: 20px;
+    padding: 26px 24px;
+    position: relative;
+  }
+  .level-card .step {
+    font-family: 'Sora'; font-size: 12px; font-weight: 700; color: var(--white-35);
+    margin: 0 0 14px;
+  }
+  .level-icon {
+    width: 42px; height: 42px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .level-icon svg { width: 20px; height: 20px; }
+  .level-card h3 { font-size: 18px; margin: 0 0 8px; }
+  .level-card p { font-size: 14px; color: var(--white-70); line-height: 1.55; margin: 0; }
+  .lv-leve .level-icon { background: rgba(56,189,248,0.12); }
+  .lv-leve .level-icon svg { color: var(--sky-400); }
+  .lv-moderado .level-icon { background: rgba(139,92,246,0.14); }
+  .lv-moderado .level-icon svg { color: var(--violet-400); }
+  .lv-avancado .level-icon { background: rgba(249,115,22,0.14); }
+  .lv-avancado .level-icon svg { color: var(--ember-400); }
+
+  /* Adapt section */
+  .adapt-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 940px) { .adapt-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .profile-card {
+    background: var(--base-900); border: 1px solid var(--base-700);
+    border-radius: 22px; padding: 26px;
+  }
+  .profile-top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .profile-avatar {
+    width: 54px; height: 54px; border-radius: 999px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--violet-400), var(--violet-600));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora'; font-weight: 700; font-size: 20px; color: white;
+  }
+  .profile-top h4 { margin: 0; font-size: 16px; }
+  .profile-top span { font-size: 13px; color: var(--white-35); }
+  .profile-tag {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--white-70);
+    padding: 11px 0; border-top: 1px solid var(--base-700);
+  }
+  .profile-tag:first-of-type { border-top: none; padding-top: 0; }
+  .profile-tag svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--ember-400); }
+  .profile-note {
+    margin-top: 16px; font-size: 13px; line-height: 1.6; color: var(--mint-400);
+    background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.22);
+    border-radius: 14px; padding: 12px 14px;
+  }
+
+  .workout-list { display: flex; flex-direction: column; gap: 12px; }
+  .workout-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--base-900); border: 1px solid var(--base-700);
+    border-radius: 16px; padding: 14px 16px;
+  }
+  .workout-emoji {
+    width: 42px; height: 42px; border-radius: 12px; background: var(--base-800);
+    display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0;
+  }
+  .workout-item h5 { margin: 0 0 3px; font-size: 14.5px; font-weight: 600; }
+  .workout-item p { margin: 0; font-size: 12.5px; color: var(--white-50); }
+  .workout-meta { margin-left: auto; text-align: right; flex-shrink: 0; }
+  .workout-meta .dur { font-size: 12.5px; color: var(--white-70); font-weight: 600; }
+  .workout-meta .xp { font-size: 11px; color: var(--mint-400); margin-top: 2px; }
+
+  /* Motivation / gamification */
+  .motivation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 860px) { .motivation-grid { grid-template-columns: 1fr; } }
+  .streak-card {
+    background: var(--base-900); border: 1px solid var(--base-700);
+    border-radius: 22px; padding: 28px;
+  }
+  .streak-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .streak-top h4 { margin: 0; font-size: 16px; }
+  .streak-flame { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ember-400); }
+  .streak-flame svg { width: 16px; height: 16px; }
+  .streak-bars { display: flex; align-items: flex-end; gap: 8px; height: 74px; margin-bottom: 10px; }
+  .streak-bars > div { flex: 1; border-radius: 7px 7px 3px 3px; background: var(--base-700); }
+  .streak-bars > div.on { background: linear-gradient(180deg, var(--mint-400), var(--mint-500)); }
+  .streak-days { display: flex; gap: 8px; }
+  .streak-days > div { flex: 1; text-align: center; font-size: 10px; color: var(--white-35); }
+
+  .badges-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .badge {
+    background: var(--base-900); border: 1px solid var(--base-700);
+    border-radius: 18px; padding: 18px 14px; text-align: center;
+  }
+  .badge.locked { opacity: 0.55; background: var(--base-850); }
+  .badge-icon {
+    width: 44px; height: 44px; border-radius: 999px; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    background: rgba(139,92,246,0.14);
+  }
+  .badge.locked .badge-icon { background: var(--base-800); }
+  .badge.locked .badge-icon svg { width: 16px; height: 16px; color: var(--white-35); }
+  .badge h5 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+  .badge p { margin: 0; font-size: 11px; color: var(--white-35); line-height: 1.4; }
+
+  /* Accessibility */
+  .access-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 780px) { .access-grid { grid-template-columns: 1fr; } }
+  .access-card {
+    background: var(--base-900); border: 1px solid var(--base-700);
+    border-radius: 22px; padding: 28px;
+  }
+  .access-demo {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  }
+  .fdemo { display: flex; align-items: center; justify-content: center; border-radius: 10px; font-family: 'Sora'; font-weight: 700; background: var(--base-800); color: var(--white-50); }
+  .fdemo.small { width: 30px; height: 30px; font-size: 13px; }
+  .fdemo.big { padding: 0 12px; height: 30px; font-size: 13px; }
+  .fdemo.on { background: var(--violet-500); color: white; }
+  .vdemo {
+    display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+    color: var(--mint-400); background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 999px; padding: 7px 14px; margin-bottom: 20px; width: fit-content;
+  }
+  .vdemo svg { width: 13px; height: 13px; }
+  .access-card h3 { font-size: 18px; margin: 0 0 8px; }
+  .access-card p { font-size: 14px; color: var(--white-70); line-height: 1.6; margin: 0; }
+
+  /* Final CTA */
+  .final-cta {
+    background: linear-gradient(160deg, var(--base-900), var(--base-950));
+    border: 1px solid var(--base-700);
+    border-radius: 28px;
+    padding: 64px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(139,92,246,0.22), transparent 60%);
+    pointer-events: none;
+  }
+  @media (max-width: 640px) { .final-cta { padding: 48px 22px; } }
+  .final-cta h2 {
+    position: relative;
+    font-size: clamp(26px, 3.6vw, 38px);
+    margin: 0 0 14px;
+    max-width: 560px;
+    margin-left: auto; margin-right: auto;
+  }
+  .final-cta p {
+    position: relative;
+    font-size: 16px; color: var(--white-70); max-width: 460px;
+    margin: 0 auto 30px; line-height: 1.6;
+  }
+  .final-cta .hero-cta-row { position: relative; justify-content: center; margin-bottom: 0; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--base-700); padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-inner .brand-name { font-size: 14px; }
+  footer p { font-size: 13px; color: var(--white-35); margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 48 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="url(#g)" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"/>
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="48" y2="46" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#a78bfa"/>
+            <stop offset="1" stop-color="#7c3aed"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="brand-name">Vitalis</span>
+    </a>
+    <div class="nav-links">
+      <a href="#niveis">Como funciona</a>
+      <a href="#adaptado">Adaptação</a>
+      <a href="#motivacao">Motivação</a>
+      <a href="#acessibilidade">Acessibilidade</a>
+    </div>
+    <a class="nav-cta" href="#baixar">Baixar grátis</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="14" height="14"><path d="M12 2l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 13.6l-5 3.6 1.9-5.8L4 7.8h6.1z"/></svg>
+          Desenvolvido a partir da rotina de quem treina com cuidado
+        </span>
+        <h1>Treinos que se adaptam a <em>você</em>, não o contrário</h1>
+        <p class="lead">
+          Vitalis ajusta cada exercício à sua condição física — joelho sensível, pressão alta, ritmo mais devagar — e transforma o progresso em algo que dá vontade de continuar todo dia.
+        </p>
+        <div class="hero-cta-row">
+          <a class="btn-primary" href="#baixar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Baixar o Vitalis
+          </a>
+          <a class="btn-ghost" href="#niveis">Ver como funciona</a>
+        </div>
+        <div class="hero-badges">
+          <span class="hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Treinos revisados por nível de intensidade
+          </span>
+          <span class="hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Fonte ajustável e narração por voz
+          </span>
+        </div>
+      </div>
+
+      <div class="phone-stage">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-top">
+              <div class="phone-font-toggle">
+                <span class="on">A</span>
+                <span>A+</span>
+              </div>
+              <div class="phone-voice">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 19v3"/></svg>
+                Voz on
+              </div>
+            </div>
+            <div class="phone-greet">
+              <div class="phone-avatar">M</div>
+              <div>
+                <p class="g1">Bom dia! 🔥</p>
+                <p class="g2">Maria Silva</p>
+              </div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-row">
+                <span class="lvl">Nível 7 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span>
+                <span class="xp">2.340 XP</span>
+              </div>
+              <div class="bar"><div style="width:78%"></div></div>
+              <p class="sub">78% para o Nível 8</p>
+            </div>
+            <div class="phone-stats">
+              <div class="phone-stat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a6.5 6.5 0 11-13 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+                <span class="v">405</span>
+                <span class="l">Calorias</span>
+              </div>
+              <div class="phone-stat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5l11 11M18 4l2 2-3 3-2-2zM4 18l2 2 3-3-2-2zM8 6l1.5 1.5M14.5 16.5L16 18"/></svg>
+                <span class="v">3</span>
+                <span class="l">Treinos</span>
+              </div>
+              <div class="phone-stat">
+                <svg viewBox="0 0 24 24" fill="#fb923c" stroke="none"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>
+                <span class="v">7 dias</span>
+                <span class="l">Sequência</span>
+              </div>
+            </div>
+            <p class="phone-section-title">Desafio do Dia</p>
+            <div class="phone-card" style="margin-bottom:0;">
+              <p style="font-size:12px;font-weight:600;margin:0 0 10px;color:var(--white-90);">CAMINHADA LEVE</p>
+              <div class="phone-challenge">
+                <div style="flex:1;">
+                  <div class="bar"><div style="width:66%"></div></div>
+                  <p class="sub">20/30 min</p>
+                </div>
+                <div class="phone-play">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="phone-nav">
+              <div class="active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 11l9-8 9 8M5 9v11h14V9"/></svg>
+                <span>Início</span>
+              </div>
+              <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6.5 6.5l11 11M18 4l2 2-3 3-2-2zM4 18l2 2 3-3-2-2z"/></svg>
+                <span>Treinos</span>
+              </div>
+              <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4zM7 6H4a3 3 0 003 3M17 6h3a3 3 0 01-3 3"/></svg>
+                <span>Conquistas</span>
+              </div>
+              <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+                <span>Perfil</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <!-- INTENSITY LEVELS -->
+  <section id="niveis">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Você escolhe o ritmo, o app ajusta o resto</h2>
+        <p>Todo treino do Vitalis pertence a um de três níveis de intensidade. Você começa onde estiver confortável e sobe de nível conforme o corpo responde — sem pressa e sem cobrança.</p>
+      </div>
+      <div class="levels">
+        <div class="level-card lv-leve">
+          <p class="step">Primeiro passo</p>
+          <div class="level-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.4 18 2c1.5 1.5 2 5.6-.5 8.5-2.7 3-6.3 3.4-6.5 9.5z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.32 14.45 11 16 11 18"/></svg>
+          </div>
+          <h3>Leve</h3>
+          <p>Alongamentos e mobilidade em ritmo confortável, como a Caminhada Estacionária e a Elevação de Panturrilha — pensados para quem está recomeçando ou tem restrições de movimento.</p>
+        </div>
+        <div class="level-card lv-moderado">
+          <p class="step">Quando o corpo pedir mais</p>
+          <div class="level-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69s6 5.84 6 10.31a6 6 0 11-12 0c0-4.47 6-10.31 6-10.31z"/></svg>
+          </div>
+          <h3>Moderado</h3>
+          <p>Força com apoio, como o Agachamento Apoiado na cadeira e o Step no Degrau Baixo — constrói resistência mantendo o impacto sob controle.</p>
+        </div>
+        <div class="level-card lv-avancado">
+          <p class="step">No seu tempo</p>
+          <div class="level-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a6.5 6.5 0 11-13 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+          </div>
+          <h3>Avançado</h3>
+          <p>Caminhada rápida com inclinação e mais tempo de atividade contínua — para quem já construiu base e quer elevar o condicionamento com segurança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ADAPTATION -->
+  <section id="adaptado">
+    <div class="wrap">
+      <div class="adapt-grid">
+        <div class="profile-card">
+          <div class="profile-top">
+            <div class="profile-avatar">M</div>
+            <div>
+              <h4>Maria Silva</h4>
+              <span>68 anos · Nível 7</span>
+            </div>
+          </div>
+          <div class="profile-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>
+            Joelho sensível · Hipertensão
+          </div>
+          <div class="profile-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Na plataforma desde março de 2026
+          </div>
+          <p class="profile-note">Treinos ajustados automaticamente para joelho e hipertensão.</p>
+        </div>
+
+        <div>
+          <div class="section-head" style="margin-bottom:28px;">
+            <h2>Sua condição entra na conta antes do primeiro treino</h2>
+            <p>Ao criar o perfil, você conta o que precisa ser respeitado — e o Vitalis filtra os exercícios que combinam com isso, em vez de te entregar uma lista genérica.</p>
+          </div>
+          <div class="workout-list">
+            <div class="workout-item">
+              <div class="workout-emoji">🧘</div>
+              <div>
+                <h5>Alongamento Sentado</h5>
+                <p>Evita sobrecarga no joelho afetado</p>
+              </div>
+              <div class="workout-meta">
+                <div class="dur">10 min</div>
+                <div class="xp">+40 XP</div>
+              </div>
+            </div>
+            <div class="workout-item">
+              <div class="workout-emoji">🦵</div>
+              <div>
+                <h5>Elevação de Panturrilha</h5>
+                <p>Apoie as mãos na parede para equilíbrio</p>
+              </div>
+              <div class="workout-meta">
+                <div class="dur">3x12 rep</div>
+                <div class="xp">+60 XP</div>
+              </div>
+            </div>
+            <div class="workout-item">
+              <div class="workout-emoji">⏱️</div>
+              <div>
+                <h5>Caminhada Estacionária</h5>
+                <p>No ritmo do coração, sem pressa</p>
+              </div>
+              <div class="workout-meta">
+                <div class="dur">15 min</div>
+                <div class="xp">+70 XP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- MOTIVATION -->
+  <section id="motivacao">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Constância vira algo visível — e comemorado</h2>
+        <p>Cada treino soma XP, sobe de nível e alimenta uma sequência de dias. Não é sobre performance: é sobre voltar amanhã.</p>
+      </div>
+      <div class="motivation-grid">
+        <div class="streak-card">
+          <div class="streak-top">
+            <h4>Sequência da semana</h4>
+            <span class="streak-flame">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a6.5 6.5 0 11-13 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+              7 dias
+            </span>
+          </div>
+          <div class="streak-bars">
+            <div class="on" style="height:40%"></div>
+            <div class="on" style="height:65%"></div>
+            <div class="on" style="height:50%"></div>
+            <div class="on" style="height:80%"></div>
+            <div class="on" style="height:55%"></div>
+            <div class="on" style="height:70%"></div>
+            <div class="on" style="height:90%"></div>
+          </div>
+          <div class="streak-days">
+            <div>S</div><div>T</div><div>Q</div><div>Q</div><div>S</div><div>S</div><div>D</div>
+          </div>
+        </div>
+        <div class="badges-grid">
+          <div class="badge">
+            <div class="badge-icon">🏅</div>
+            <h5>Primeira Semana</h5>
+            <p>7 dias seguidos de treino</p>
+          </div>
+          <div class="badge">
+            <div class="badge-icon">🔥</div>
+            <h5>Queima Total</h5>
+            <p>1.000 calorias acumuladas</p>
+          </div>
+          <div class="badge locked">
+            <div class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            </div>
+            <h5>Constância de Ferro</h5>
+            <p>30 dias de sequência</p>
+          </div>
+          <div class="badge locked">
+            <div class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            </div>
+            <h5>Nível 10</h5>
+            <p>Alcance o nível 10</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ACCESSIBILITY -->
+  <section id="acessibilidade">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Acessibilidade faz parte do treino, não é um extra</h2>
+        <p>Duas configurações simples, sempre visíveis no topo da tela — porque conseguir ler e ouvir as instruções é tão importante quanto o exercício em si.</p>
+      </div>
+      <div class="access-grid">
+        <div class="access-card">
+          <div class="access-demo">
+            <div class="fdemo small on">A</div>
+            <div class="fdemo big">A+</div>
+          </div>
+          <h3>Texto no tamanho que funciona pra você</h3>
+          <p>Um toque aumenta a fonte em toda a interface — nomes de exercícios, instruções e números ficam maiores sem precisar mexer nas configurações do celular.</p>
+        </div>
+        <div class="access-card">
+          <div class="vdemo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 19v3"/></svg>
+            Voz on
+          </div>
+          <h3>Instruções faladas em voz alta</h3>
+          <p>Com a narração ativada, cada passo do treino é lido em voz alta, para treinar sem depender de ficar olhando pra tela o tempo todo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="baixar">
+    <div class="wrap">
+      <div class="final-cta">
+        <h2>Comece no nível que for confortável hoje</h2>
+        <p>O Vitalis está disponível para iOS e Android. Crie seu perfil, conte o que precisa ser respeitado, e comece o primeiro treino em poucos minutos.</p>
+        <div class="hero-cta-row">
+          <a class="btn-primary" href="#top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Baixar para iOS
+          </a>
+          <a class="btn-ghost" href="#top">Baixar para Android</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 48 46" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+        <path fill="url(#g2)" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"/>
+        <defs>
+          <linearGradient id="g2" x1="0" y1="0" x2="48" y2="46" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#a78bfa"/>
+            <stop offset="1" stop-color="#7c3aed"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="brand-name">Vitalis</span>
+    </a>
+    <p>© 2026 Vitalis. Treinos adaptados, no seu ritmo.</p>
+  </div>
+</footer>
+
+</body>
+</html>
